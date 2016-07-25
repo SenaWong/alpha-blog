@@ -1,4 +1,7 @@
+require 'byebug'
+
 class ArticlesController < ApplicationController
+
 	before_action :set_article, only: [:edit, :update, :show, :destroy]
 
 	def new
@@ -46,8 +49,12 @@ class ArticlesController < ApplicationController
 
 	private
 
+
 		def set_article
 			@article = Article.find(params[:id])
+		rescue ActiveRecord::RecordNotFound
+				flash[:warning] = "Article #{params[:id]} not found"
+			redirect_to articles_path
 		end
 
 		def article_params
